@@ -13,7 +13,7 @@ int partition(int arr[], int start, int end)
 
     int pivot = arr[start];
     int i = start + 1;
-    for (int j = start + 1; j <= end; j++)
+    for (int j = i; j <= end; j++)
     {
         if (arr[j] < pivot)
         {
@@ -33,15 +33,16 @@ int quickSort(int arr[], int start, int end, int count)
     
     // i indicate the first element which is just between the element bigger and smaller than pivot 
     // j indicate right after the last element which is partitioned
+    int n = (end - start);
     if (start < end)
     {
         int piv = partition(arr, start, end);
         // End of Partition
-        quickSort(arr, start, piv - 1, count);
-        quickSort(arr, piv + 1, end, count);
+        int left = quickSort(arr, start, piv - 1, count);
+        int right = quickSort(arr, piv + 1, end, count);
+        return count + left + right + n;
     }
-    count += end - start;
-    return count;
+    return 0;
 } // End Quick Sort
 
 // function to convert string array to integer array

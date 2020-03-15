@@ -1,8 +1,12 @@
 // Karger's algorithm to find Minimum Cut in an undirected, unweighted and connected graph
+#include <iostream>
+#include <fstream>
+#include <vector>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
+#include <sstream>
+using namespace std;
 // a structure to represent a unweighted edge in graph
 struct Edge
 {
@@ -143,41 +147,32 @@ struct Graph* createGraph(int V, int E)
 // Driver program to test above functions
 int main()
 {
-    /* Let us Create following unweighted graph
-        0-------1
-        | \     |
-        |   \   |
-        |     \ |
-        2-------3 
-    */
-   int V = 4;
-   int E = 5;
-   struct Graph* graph = createGraph(V, E);
-   
-   // add edge 0 - 1
-   graph->edge[0].src = 0;
-   graph->edge[0].dest = 1;
+    ifstream infile; infile.open("kargerMinCut.txt");
+    string buffer;
+    vector<string> vecOfstring;
+    
+    while (infile.peek() != EOF)
+    {
+        getline(infile, buffer);
+        vecOfstring.push_back(buffer);
+        
+    }
+    // cout << vecOfstring[0] << endl;
 
-   // add edge 0 - 2
-   graph->edge[1].src = 0;
-   graph->edge[1].dest = 2;
-   
-   // add edge 0 - 3
-   graph->edge[2].src = 0;
-   graph->edge[2].dest = 3;
+    
+    int m = 0;
+    vector<vector<int> > ret( 200 , vector<int> (m));
+    for(int i = 0; i< 200; i++)  
+    {
+        stringstream ss(vecOfstring[i]);
+        int number;
+        while (ss >> number)
+        {
+            ret[i].push_back(number);
+        }
+        
+    }
 
-   //add edge 1 - 3
-   graph->edge[3].src = 1;
-   graph->edge[3].dest = 3;
-
-   //add edge 2 - 3
-   graph->edge[4].src = 2;
-   graph->edge[4].dest = 3;
-
-    // Use a different seed value for every run
-    srand(time(NULL));
-
-    printf("\nCut found by Karger's randomised algorithm is %d\n", kargerMinCut(graph));
-
+    
     return 0;
 }
