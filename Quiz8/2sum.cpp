@@ -1,29 +1,22 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-
+#define SIZE 1000000
+#define MIN -10000
+#define MAX 10000
 int main()
 {
     fstream file;
     file.open("2sum.txt");
-    string buffer;
-    vector<string> vecofstr;
     
-    while (file.peek() != EOF)
+    long long data_[SIZE];
+    for (int i = 0; i < SIZE; i++)
     {
-        getline(file, buffer);
-        vecofstr.push_back(buffer);
+        file >> data_[i];
     }
-    vector<int> data2;
-    cout << vecofstr[0] << endl;
-    for (int i = 0; i < vecofstr.size(); i++)
-    {
-        stringstream ss (vecofstr[i]);
-        int number;
-        ss >> number;
-        data2.push_back(number);
-    }
-    cout << data2[0] << endl;
+    
+    
+
     
     return 0;
 }
