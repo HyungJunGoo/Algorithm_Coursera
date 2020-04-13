@@ -4,8 +4,8 @@ using namespace std;
 
 bool diffcomapre(pair<int, pair<int, int> >  &a, pair<int, pair<int, int> > &b)
 {
-    float A = a.second.first / a.second.second;
-    float B = b.second.first / b.second.second;
+    double A = (double)a.second.first / (double)a.second.second;
+    double B = (double)b.second.first / (double)b.second.second;
     
     if (A == B)
     {

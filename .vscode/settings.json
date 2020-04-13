@@ -2,6 +2,8 @@
     "files.associations": {
         "iosfwd": "cpp",
         "istream": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "utility": "cpp",
+        "vector": "cpp"
     }
 }
