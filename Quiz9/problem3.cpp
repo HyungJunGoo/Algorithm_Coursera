@@ -5,14 +5,16 @@ class Graph
 {
     int V; // # of vertices
     vector<pi>* adj; // vertex - vertex (cost)
-    int total_cost ;
-    vector<bool> Selected;
-    vector<pi> temp;
+    // int total_cost ;
+    // vector<bool> Selected;
+    // vector<pi> temp;
 public:
     Graph(int V);
     void addEdge(int v, int w, int cost);
     void primMST(int src);
     void showConndected(int vertex);
+    vector<pi> temp;
+    int total_cost = 0;
     int getTotalCost();
 };
 
@@ -20,9 +22,9 @@ Graph::Graph(int V)
 {
     this->V = V;
     adj = new vector<pi>[V];
-    vector<bool> Selected (V, false);
-    total_cost = 0;
-    
+    vector<bool> Selected (V+1, false);
+    vector<pi> temp;
+    int total_cost = 0;
 }
 
 void Graph::addEdge(int v, int w, int cost)
@@ -37,9 +39,8 @@ bool sortbysec(const pi &a, const pi &b)
 
 void Graph::primMST(int src)
 {
-    
     Selected[src] = true;
-    cout << "SSI BAL" <<endl;
+    cout << "????" << endl;
     for (vector<pi>::iterator itr = adj[src].begin(); itr != adj[src].end(); itr++)
     {
         if(Selected[(*itr).first] != true)
@@ -68,6 +69,7 @@ void Graph::primMST(int src)
 
 void Graph::showConndected(int vertex)
 {   
+    if(!Selected[vertex]) cout << " Fuck" << endl;
     cout << "From the " << vertex << " there are : ";
     vector<pi>::iterator itr;
     for (itr = adj[vertex].begin(); itr != adj[vertex].end(); itr++)
@@ -98,6 +100,7 @@ int main()
         file >> v >> w >> cost;
         g.addEdge(v, w, cost);
     }
+    
     g.showConndected(4);
 
     g.primMST(1);
