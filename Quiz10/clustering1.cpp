@@ -1,60 +1,79 @@
-/*
-This file describes a distance function (equivalently, a complete graph with edge costs). It has the following format:
-
-[number_of_nodes]
-
-[edge 1 node 1] [edge 1 node 2] [edge 1 cost]
-
-[edge 2 node 1] [edge 2 node 2] [edge 2 cost]
-
-...
-
-There is one edge (i,j) for each choice of 1≤i<j≤n, where n is the number of nodes.
-
-For example, the third line of the file is "1 3 5250", indicating that the distance between nodes 1 and 3 (equivalently, the cost of the edge (1,3)) is 5250. You can assume that distances are positive, but you should NOT assume that they are distinct.
-
-Your task in this problem is to run the clustering algorithm from lecture on this data set, where the target number k of clusters is set to 4. What is the maximum spacing of a 4-clustering?
-*/
-
 #include <bits/stdc++.h>
-
 using namespace std;
-using pi = pair<int, int>;
-
-
+using PI=pair<int, int>;
 class Graph
 {
-private:
     int V;
-    vector<pi>* edges; // vector[edge] = ( vertex1 , vertex2)
-    vector<int> edge_list;
+    map<PI, int> edge;
+    vector<int> selected;
     
-public:
-    Graph(int V);
-    void addEdge(int v, int w, int edge);
-    void set_edge_list(int edge);
-    int get_min_edge();
+    public:
+        Graph (int V);
+        void add_edge(int v, int w, int edge);
+        void clustering();
+        int get_head(int v);
 };
 
-
-Graph::Graph(int V)
+Graph::Graph (int V) : selected(V+1, 0)
 {
     this->V = V;
-    edges = new vector<pi>[V+1];
 }
 
-void Graph::addEdge(int v, int w, int edge)
+void Graph::add_edge(int v, int w, int _edge)
 {
-    edges[edge].push_back(make_pair(v, w));
-    
-    edge_list.push_back(edge);
+    PI temp = make_pair(v, w);
+    edge[temp] = _edge;
 }
 
-int Graph::get_min_edge()
+bool sortbysec(const pair<PI, int> &a, const pair<PI, int> &b)
 {
-    vector<int>::iterator itr;
-    sort(edge_list.begin(), edge_list.end());
-    return edge_list.front();
+    return a.second < b.second;
+}
+
+int Graph::get_head(int v)
+{
+    if (selected[v] == v)
+    {
+        int result = selected[v];
+        return result;
+    }
+    int temp = selected[v];
+    int result = get_head(temp);
+    return result;
+}
+
+void Graph::clustering()
+{
+    int k = V;
+    for (int i = 1; i <= V ; i++)
+    {
+        selected[i] = i;
+    }
+    int result;
+    while ( k >= 4)
+    {
+        pair<PI, int> min = *min_element(edge.begin(), edge.end(), sortbysec);
+        // cout << "# of k is : " << k << endl;
+        // cout << "min edge is : " << min.second << " =>  ( " << min.first.first << " , " << min.first.second << " )" << endl;  
+        // cout << endl;
+        
+        if( get_head(min.first.first) != get_head(min.first.second))
+        {
+            selected[get_head(min.first.second)] = get_head(min.first.first);
+            result = min.second;
+            edge.erase(min.first);
+            k--;
+        }
+        else
+        {
+            edge.erase(min.first);
+            continue;
+        }
+    }
+    // for(vector<int>::iterator itr = selected.begin(); itr != selected.end(); itr++)
+    //     cout << *itr << " ";
+    // cout << endl;
+    cout << result << endl;
 }
 
 
@@ -62,20 +81,18 @@ int main()
 {
     fstream file;
     file.open("clustering1.txt");
-    int V; // # of vertices
+    int V;
     file >> V;
-    
     Graph g(V);
     while (file.peek() != EOF)
     {
-        int v, x, edge;
-        file >> v >> x >> edge;
-        g.addEdge(v, x, edge);
+        int v, w , edge;
+        file >> v >> w >> edge;
+        g.add_edge(v, w, edge);
     }
     
-    int answer = g.get_min_edge();
-    // cout << answer << endl;
-    int num_of_group = V;
+    g.clustering();
+
 
     return 0;
 }
