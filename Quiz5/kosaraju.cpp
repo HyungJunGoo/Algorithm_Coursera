@@ -23,7 +23,7 @@ class Graph
 
         // The main fuction that finds and prints strongly connected components
         void printSCCs();
-        // Function tah returns reverse (or transpose) of this graph
+        // Function that returns reverse (or transpose) of this graph
         Graph getTranspose();
     
 };
